@@ -22,3 +22,9 @@ En esta primera entrega se ha desarrollado el **sistema de gestión de personaje
 * [ ] Bucle de juego principal (Subir de piso).
 * [ ] Sistema de recompensas (Pociones y mejoras).
 * [ ] Jefe Final (Boss).
+
+## 🚀 Cómo ejecutar
+Simplemente corre el archivo principal con Python:
+
+```bash
+main.py
