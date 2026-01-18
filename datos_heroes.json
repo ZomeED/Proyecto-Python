@@ -1,0 +1,23 @@
+[
+    {
+        "nombre": "Jose",
+        "clase": "Humano",
+        "vida": 60,
+        "ataque": 15,
+        "velocidad": 20
+    },
+    {
+        "nombre": "Luisito19",
+        "clase": "Tanque",
+        "vida": 70,
+        "ataque": 20,
+        "velocidad": 10
+    },
+    {
+        "nombre": "Antonio",
+        "clase": "Duende",
+        "vida": 50,
+        "ataque": 15,
+        "velocidad": 30
+    }
+]
