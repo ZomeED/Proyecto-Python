@@ -1,20 +1,61 @@
+import json
+
 """ 
 Proyecto: The Tower - Minijuego de rol
-Gestión de personajes. En un futuro se implementarán clases para los enemigos, 
-objetos de recompensa, ataques, etc.
+GestiÃ³n de personajes con guardado en fichero (Forma manual).
 """
 
-# Lista de los héroes
-lista_heroes = []
+ARCHIVO = "datos_heroes.json"
+
+def cargar_datos():
+    """ 
+    Leer el fichero como texto y convertir a lista 
+    """
+    try:
+        fichero = open(ARCHIVO, "r")
+        
+        contenido_texto = fichero.read()
+        
+        fichero.close()
+
+        # Convertir la cadena JSON a un diccionario Python
+        datos_json = json.loads(contenido_texto)
+        
+        print("--> Datos cargados correctamente.")
+        return datos_json
+
+    except:
+        # Si hay error (ej. el fichero no existe aÃºn), se devuelva la lista vacÃ­a
+        return []
+
+def guardar_datos(lista):
+    """ 
+    Convertir la lista a texto y escribirla en el fichero
+    """
+    # La funciÃ³n dumps() toma el objeto y devuelve un String
+    # Usamos indent=4 para que sea legible
+    texto_json = json.dumps(lista, indent=4)
+    
+    # Abrir el fichero en modo escritura , guardar la cadena de texto y cerrar para guardar los cambios
+    fichero = open(ARCHIVO, "w")
+    
+    fichero.write(texto_json)
+    
+    fichero.close()
+
+
+# --- INICIO DEL PROGRAMA ---
+
+# Al arrancar, se intenta cargar lo que haya guardado
+lista_heroes = cargar_datos()
 
 def insertar_heroe(lista):
-    """ Función para registrar un nuevo personaje """
-    print("\n--- CREACIÓN DE PERSONAJE ---")
+    """ FunciÃ³n para registrar un nuevo personaje """
+    print("\n--- CREACIÃ“N DE PERSONAJE ---")
     
-    nombre = input("Introduce el nombre de tu héroe: ")
+    nombre = input("Introduce el nombre de tu hÃ©roe: ")
     es_valido = True 
     
-    # Comprobar que el nombre no está vacío y si ya existe
     if len(nombre) == 0:
         print("Error: El nombre no puede estar en blanco.")
         es_valido = False
@@ -22,18 +63,16 @@ def insertar_heroe(lista):
     if es_valido:
         indice = 0
         while indice < len(lista) and es_valido:
-            # Comparamos nombres (cuidado con las mayúsculas/minúsculas si fuera necesario)
             if lista[indice]['nombre'] == nombre:
-                print("Error: Ya existe un héroe con este nombre.")
+                print("Error: Ya existe un hÃ©roe con este nombre.")
                 es_valido = False
             indice += 1
 
-    # Seleccionar la clase
     if es_valido:
         print("\n Clases disponibles:")
         print("1. Humano (Equilibrado)")
         print("2. Tanque (Mucho aguante, lento)")
-        print("3. Duende (Muy rápido)")
+        print("3. Duende (Muy rÃ¡pido)")
 
         try:
             opcion = int(input("Elige una clase (1-3): "))
@@ -44,7 +83,6 @@ def insertar_heroe(lista):
             velocidad = 0
             datos_correctos = False
 
-            # estadísticas provisionales
             if opcion == 1:
                 clase = "Humano"
                 vida = 60
@@ -64,9 +102,8 @@ def insertar_heroe(lista):
                 velocidad = 30
                 datos_correctos = True
             else:
-                print("Opción incorrecta. Tienes que poner 1, 2 o 3.")
+                print("OpciÃ³n incorrecta. Tienes que poner 1, 2 o 3.")
 
-            # Si todo ha ido bien, guardamos el diccionario
             if datos_correctos:
                 nuevo_heroe = {
                     "nombre": nombre,
@@ -76,22 +113,26 @@ def insertar_heroe(lista):
                     "velocidad": velocidad
                 }
                 lista.append(nuevo_heroe)
-                print("--> ¡Personaje creado! " + nombre + " es un " + clase + ".")
+                
+                # GUARDAR: Actualizar el fichero cada vez que se cambia algo
+                guardar_datos(lista)
+                
+                print("--> Â¡Personaje creado! " + nombre + " es un " + clase + ".")
 
         except ValueError:
-            print("Error: Debes introducir un número entero.")
+            print("Error: Debes introducir un nÃºmero entero.")
 
 
 def buscar_heroe(lista):
-    """ Buscar un héroe por el nombre para imprimir sus datos """
-    nombre_buscado = input("\nIntroduce nombre de héroe para buscar: ")
+    """ Buscar un hÃ©roe por el nombre para imprimir sus datos """
+    nombre_buscado = input("\nIntroduce nombre de hÃ©roe para buscar: ")
     encontrado = False
     i = 0
     
     while i < len(lista) and not encontrado:
         h = lista[i]
         if h["nombre"].lower() == nombre_buscado.lower():
-            print("\n--- FICHA DEL HÉROE ---")
+            print("\n--- FICHA DEL HÃ‰ROE ---")
             print("Nombre: " + h['nombre'])
             print("Clase:  " + h['clase'])
             print("Vida:   " + str(h['vida']))
@@ -104,8 +145,8 @@ def buscar_heroe(lista):
 
 
 def modificar_heroe(lista):
-    """ Buscar un héroe para cambiarle el nombre """
-    busqueda = input("\n¿Qué héroe quieres modificar?: ")
+    """ Buscar un hÃ©roe para cambiarle el nombre """
+    busqueda = input("\nÂ¿QuÃ© hÃ©roe quieres modificar?: ")
     encontrado = False
     i = 0
     
@@ -117,39 +158,47 @@ def modificar_heroe(lista):
             
             if len(nuevo_nombre) > 0:
                 h["nombre"] = nuevo_nombre
+                
+                # LLamar a la funciÃ³n que guarda los datos
+                guardar_datos(lista)
+                
                 print("Nombre cambiado correctamente.")
             else:
-                print("Error: No puedes dejar el nombre vacío.")
+                print("Error: No puedes dejar el nombre vacÃ­o.")
             
             encontrado = True
         i += 1
 
     if not encontrado:
-        print("No encuentro a ese héroe en la lista.")
+        print("No encuentro a ese hÃ©roe en la lista.")
 
 
 def eliminar_heroe(lista):
-    """ Eliminar un personaje de la lista pidiendo confirmación """
-    nombre = input("\n¿Qué héroe quieres eliminar?: ")
+    """ Eliminar un personaje de la lista pidiendo confirmaciÃ³n """
+    nombre = input("\nÂ¿QuÃ© hÃ©roe quieres eliminar?: ")
     encontrado = False
     i = 0
     
     while i < len(lista) and not encontrado:
         h = lista[i]
         if h["nombre"].lower() == nombre.lower():
-            respuesta = input("¿Seguro que quieres borrar a " + h['nombre'] + "? (s/n): ")
+            respuesta = input("Â¿Seguro que quieres borrar a " + h['nombre'] + "? (s/n): ")
             
             if respuesta.lower() == 's':
                 del lista[i]
-                print("Héroe eliminado definitivamente.")
+                
+                # LLamar a la funciÃ³n que guarda los datos
+                guardar_datos(lista)
+                
+                print("HÃ©roe eliminado definitivamente.")
             else:
-                print("Operación cancelada.")
+                print("OperaciÃ³n cancelada.")
             
             encontrado = True
         i += 1
             
     if not encontrado:
-        print("No se puede borrar porque no existe ese héroe.")
+        print("No se puede borrar porque no existe ese hÃ©roe.")
 
 
 def mostrar_todos(lista):
@@ -157,34 +206,32 @@ def mostrar_todos(lista):
     print("\n--- LISTA DE PERSONAJES ---")
     
     if len(lista) == 0:
-        print("Actualmente no hay héroes creados.")
+        print("Actualmente no hay hÃ©roes creados.")
     else:
-        print("NOMBRE \t\t CLASE \t\t VIDA")
-        print("-" * 40) # inserta 40 guiones
+        print(f"{'NOMBRE':<20} {'CLASE':<15} {'VIDA':<10}")
+        print("-" * 45)
 
         for h in lista:
-            # \t\t tabula para verse mejor
-            print(h['nombre'] + " \t\t " + h['clase'] + " \t " + str(h['vida']))
+            print(f"{h['nombre']:<20} {h['clase']:<15} {h['vida']:<10}")
 
-    print("-" * 40)
+    print("-" * 45)
 
 
 def menu():
-    """ Función principal que contiene el menú de opciones """
+    """ FunciÃ³n principal que contiene el menÃº de opciones """
     continuar = True
     
     while continuar:
-        print("\n=== GESTIÓN DE HÉROES RPG ===")
-        print("1. Crear Héroe")
-        print("2. Buscar Héroe")
-        print("3. Modificar Héroe")
-        print("4. Eliminar Héroe")
+        print("\n=== GESTIÃ“N DE HÃ‰ROES RPG ===")
+        print("1. Crear HÃ©roe")
+        print("2. Buscar HÃ©roe")
+        print("3. Modificar HÃ©roe")
+        print("4. Eliminar HÃ©roe")
         print("5. Ver Todos")
         print("6. Salir")
         
-        opcion = input("Elige una opción: ")
+        opcion = input("Elige una opciÃ³n: ")
 
-        # Estructura if-elif para controlar el menú
         if opcion == "1":
             insertar_heroe(lista_heroes)
         elif opcion == "2":
@@ -197,10 +244,9 @@ def menu():
             mostrar_todos(lista_heroes)
         elif opcion == "6":
             print("Programa cerrado.")
-            continuar = False # salir del while
+            continuar = False
         else:
-            print("Esa opción no existe, prueba otra vez.")
+            print("Esa opciÃ³n no existe, prueba otra vez.")
 
-
-# Ejecutar el menú del programa
+# Ejecutar el menÃº del programa
 menu()
