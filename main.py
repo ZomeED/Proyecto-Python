@@ -1,52 +1,74 @@
 import json
+import logging
 
 """ 
 Proyecto: The Tower - Minijuego de rol
-Gestión de personajes con guardado en fichero (Forma manual).
+Gestión de personajes con JSON y sistema de Logging según apuntes.
 """
 
-ARCHIVO = "datos_heroes.json"
+ARCHIVO_JSON = "datos_heroes.json"
+ARCHIVO_LOG = "registro_partida.log"
+
+# --- 1. CONFIGURACIÓN DEL SISTEMA DE REGISTRO (Logging) ---
+
+# El 'logger' raíz (root) se usa aquí para la configuración global.
+logging.basicConfig(
+    # 1. Nivel mínimo global: Se procesarán mensajes desde INFO
+    level=logging.INFO, 
+    
+    # 2. Formato de los mensajes
+    format='%(asctime)s - %(levelname)s - Módulo: %(module)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    
+    # 3. Handler 1: Guardar todos los mensajes (INFO+) en un fichero
+    filename=ARCHIVO_LOG,
+    # Modo 'a' (append) para añadir al final sin borrar lo anterior
+    filemode='a'
+)
 
 def cargar_datos():
     """ 
-    Leer el fichero como texto y convertir a lista 
+    Lee el fichero JSON. Registra éxito o error en el log.
     """
     try:
-        fichero = open(ARCHIVO, "r")
-        
+        fichero = open(ARCHIVO_JSON, "r")
         contenido_texto = fichero.read()
-        
         fichero.close()
 
-        # Convertir la cadena JSON a un diccionario Python
-        datos_json = json.loads(contenido_texto)
+        datos_recuperados = json.loads(contenido_texto)
         
-        print("--> Datos cargados correctamente.")
-        return datos_json
+        # Mensaje INFO (nivel 20): Se registrará en el fichero, pero no en la consola.
+        logging.info("Sistema: Datos cargados correctamente desde JSON.")
+        return datos_recuperados
 
-    except:
-        # Si hay error (ej. el fichero no existe aún), se devuelva la lista vacía
+    except Exception as e:
+        # Mensaje WARNING (nivel 30): Se registra en fichero
+        # Algo inesperado (fichero no existe) pero el programa sigue
+        # Uso warning porque es normal la primera vez que se juega
+        logging.warning(f"Sistema: No se encontró fichero previo o está vacío. Se inicia lista nueva. Detalle: {e}")
         return []
 
 def guardar_datos(lista):
     """ 
-    Convertir la lista a texto y escribirla en el fichero
+    Guarda los datos en JSON. 
     """
-    # La función dumps() toma el objeto y devuelve un String
-    # Usamos indent=4 para que sea legible
-    texto_json = json.dumps(lista, indent=4)
-    
-    # Abrir el fichero en modo escritura , guardar la cadena de texto y cerrar para guardar los cambios
-    fichero = open(ARCHIVO, "w")
-    
-    fichero.write(texto_json)
-    
-    fichero.close()
+    try:
+        texto_json = json.dumps(lista, indent=4)
+        fichero = open(ARCHIVO_JSON, "w")
+        fichero.write(texto_json)
+        fichero.close()
+        
+        # Mensaje INFO (nivel 20): Se registrará en el fichero, pero no en la consola.
+        logging.info("Sistema: Datos guardados exitosamente en fichero JSON.")
+        
+    except Exception as e:
+        print(f"Error crítico al guardar: {e}")
+        # Uso de exc_info=True para registrar la traza completa de la pila (traceback)
+        logging.error(f"Error CRÍTICO guardando datos: {e}", exc_info=True)
 
 
 # --- INICIO DEL PROGRAMA ---
 
-# Al arrancar, se intenta cargar lo que haya guardado
 lista_heroes = cargar_datos()
 
 def insertar_heroe(lista):
@@ -58,6 +80,8 @@ def insertar_heroe(lista):
     
     if len(nombre) == 0:
         print("Error: El nombre no puede estar en blanco.")
+        # LOG WARNING: El usuario hizo algo incorrecto, pero no rompió el programa
+        logging.warning("Creación fallida: El usuario intentó usar un nombre vacío.")
         es_valido = False
 
     if es_valido:
@@ -65,6 +89,8 @@ def insertar_heroe(lista):
         while indice < len(lista) and es_valido:
             if lista[indice]['nombre'] == nombre:
                 print("Error: Ya existe un héroe con este nombre.")
+                # LOG WARNING: Intento de duplicado
+                logging.warning(f"Creación fallida: El nombre '{nombre}' ya existe.")
                 es_valido = False
             indice += 1
 
@@ -103,6 +129,7 @@ def insertar_heroe(lista):
                 datos_correctos = True
             else:
                 print("Opción incorrecta. Tienes que poner 1, 2 o 3.")
+                logging.warning(f"Creación fallida: Opción de clase inválida ({opcion}).")
 
             if datos_correctos:
                 nuevo_heroe = {
@@ -113,18 +140,20 @@ def insertar_heroe(lista):
                     "velocidad": velocidad
                 }
                 lista.append(nuevo_heroe)
-                
-                # GUARDAR: Actualizar el fichero cada vez que se cambia algo
                 guardar_datos(lista)
                 
                 print("--> ¡Personaje creado! " + nombre + " es un " + clase + ".")
+                # LOG INFO: Éxito en la creación
+                logging.info(f"Acción: Nuevo héroe creado -> {nombre} ({clase})")
 
-        except ValueError:
+        except ValueError as e:
             print("Error: Debes introducir un número entero.")
+            # LOG ERROR con exc_info=True:
+            logging.error("Error de usuario: Introdujo texto en lugar de número.", exc_info=True)
 
 
 def buscar_heroe(lista):
-    """ Buscar un héroe por el nombre para imprimir sus datos """
+    """ Buscar un héroe por el nombre """
     nombre_buscado = input("\nIntroduce nombre de héroe para buscar: ")
     encontrado = False
     i = 0
@@ -138,6 +167,8 @@ def buscar_heroe(lista):
             print("Vida:   " + str(h['vida']))
             print("Ataque: " + str(h['ataque']))
             encontrado = True
+            # LOG INFO: Dejar constancia de la consulta
+            logging.info(f"Consulta: Se visualizaron datos de {h['nombre']}.")
         i += 1
             
     if not encontrado:
@@ -157,14 +188,17 @@ def modificar_heroe(lista):
             nuevo_nombre = input("Introduce el nuevo nombre: ")
             
             if len(nuevo_nombre) > 0:
+                nombre_antiguo = h["nombre"]
                 h["nombre"] = nuevo_nombre
                 
-                # LLamar a la función que guarda los datos
                 guardar_datos(lista)
                 
                 print("Nombre cambiado correctamente.")
+                # LOG INFO: Registro del cambio
+                logging.info(f"Modificación: '{nombre_antiguo}' cambió nombre a '{nuevo_nombre}'.")
             else:
                 print("Error: No puedes dejar el nombre vacío.")
+                logging.warning(f"Modificación fallida: intento de nombre vacío para {h['nombre']}.")
             
             encontrado = True
         i += 1
@@ -174,7 +208,7 @@ def modificar_heroe(lista):
 
 
 def eliminar_heroe(lista):
-    """ Eliminar un personaje de la lista pidiendo confirmación """
+    """ Eliminar un personaje de la lista """
     nombre = input("\n¿Qué héroe quieres eliminar?: ")
     encontrado = False
     i = 0
@@ -185,14 +219,17 @@ def eliminar_heroe(lista):
             respuesta = input("¿Seguro que quieres borrar a " + h['nombre'] + "? (s/n): ")
             
             if respuesta.lower() == 's':
+                nombre_borrado = h['nombre']
                 del lista[i]
                 
-                # LLamar a la función que guarda los datos
                 guardar_datos(lista)
                 
                 print("Héroe eliminado definitivamente.")
+                # LOG INFO: Registro de eliminación (importante)
+                logging.info(f"Eliminación: Héroe borrado -> {nombre_borrado}.")
             else:
                 print("Operación cancelada.")
+                logging.info(f"Eliminación cancelada por usuario para {h['nombre']}.")
             
             encontrado = True
         i += 1
@@ -208,8 +245,9 @@ def mostrar_todos(lista):
     if len(lista) == 0:
         print("Actualmente no hay héroes creados.")
     else:
+        # F-strings para alinear columnas
         print(f"{'NOMBRE':<20} {'CLASE':<15} {'VIDA':<10}")
-        print("-" * 45)
+        print("-" * 45) 
 
         for h in lista:
             print(f"{h['nombre']:<20} {h['clase']:<15} {h['vida']:<10}")
@@ -218,7 +256,9 @@ def mostrar_todos(lista):
 
 
 def menu():
-    """ Función principal que contiene el menú de opciones """
+    """ Función principal """
+    # LOG INFO: Inicio de sesión
+    logging.info("--- INICIO DE APLICACIÓN ---")
     continuar = True
     
     while continuar:
@@ -244,6 +284,8 @@ def menu():
             mostrar_todos(lista_heroes)
         elif opcion == "6":
             print("Programa cerrado.")
+            # LOG INFO: Fin de sesión
+            logging.info("--- FIN DE APLICACIÓN ---")
             continuar = False
         else:
             print("Esa opción no existe, prueba otra vez.")

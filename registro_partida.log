@@ -1,0 +1,12 @@
+2026-01-21 12:48:01 - INFO - Módulo: main - Sistema: Datos cargados correctamente desde JSON.
+2026-01-21 12:48:01 - INFO - Módulo: main - --- INICIO DE APLICACIÓN ---
+2026-01-21 12:48:10 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-01-21 12:48:10 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Luis (Duende)
+2026-01-21 12:48:24 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-01-21 12:48:24 - INFO - Módulo: main - Modificación: 'Luis' cambió nombre a 'Luis Marcos'.
+2026-01-21 12:48:35 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-01-21 12:48:35 - INFO - Módulo: main - Eliminación: Héroe borrado -> Luis Marcos.
+2026-01-21 12:48:43 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-01-21 12:48:43 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Antonio (Tanque)
+2026-01-21 12:48:53 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-01-21 12:48:53 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Jose Luis (Duende)

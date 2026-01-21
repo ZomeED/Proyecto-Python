@@ -14,7 +14,21 @@
         "velocidad": 10
     },
     {
+        "nombre": "Anto\u00f1ito",
+        "clase": "Duende",
+        "vida": 50,
+        "ataque": 15,
+        "velocidad": 30
+    },
+    {
         "nombre": "Antonio",
+        "clase": "Tanque",
+        "vida": 70,
+        "ataque": 20,
+        "velocidad": 10
+    },
+    {
+        "nombre": "Jose Luis",
         "clase": "Duende",
         "vida": 50,
         "ataque": 15,
