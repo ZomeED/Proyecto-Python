@@ -1,37 +1,39 @@
 [
     {
+        "nombre": "Luis",
+        "clase": "Tanque",
+        "vida": 70,
+        "ataque": 20,
+        "velocidad": 10
+    },
+    {
         "nombre": "Jose",
+        "clase": "Duende",
+        "vida": 50,
+        "ataque": 15,
+        "velocidad": 30
+    },
+    {
+        "nombre": "Ogro",
+        "clase": "Duende",
+        "vida": 50,
+        "ataque": 15,
+        "velocidad": 30,
+        "recompensa": 200
+    },
+    {
+        "nombre": "Trol",
+        "clase": "Tanque",
+        "vida": 70,
+        "ataque": 20,
+        "velocidad": 10,
+        "recompensa": 150
+    },
+    {
+        "nombre": "Mateo",
         "clase": "Humano",
         "vida": 60,
         "ataque": 15,
         "velocidad": 20
-    },
-    {
-        "nombre": "Luisito19",
-        "clase": "Tanque",
-        "vida": 70,
-        "ataque": 20,
-        "velocidad": 10
-    },
-    {
-        "nombre": "Anto\u00f1ito",
-        "clase": "Duende",
-        "vida": 50,
-        "ataque": 15,
-        "velocidad": 30
-    },
-    {
-        "nombre": "Antonio",
-        "clase": "Tanque",
-        "vida": 70,
-        "ataque": 20,
-        "velocidad": 10
-    },
-    {
-        "nombre": "Jose Luis",
-        "clase": "Duende",
-        "vida": 50,
-        "ataque": 15,
-        "velocidad": 30
     }
 ]
