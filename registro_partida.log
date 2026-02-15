@@ -1,12 +1,22 @@
-2026-01-21 12:48:01 - INFO - Módulo: main - Sistema: Datos cargados correctamente desde JSON.
-2026-01-21 12:48:01 - INFO - Módulo: main - --- INICIO DE APLICACIÓN ---
-2026-01-21 12:48:10 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
-2026-01-21 12:48:10 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Luis (Duende)
-2026-01-21 12:48:24 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
-2026-01-21 12:48:24 - INFO - Módulo: main - Modificación: 'Luis' cambió nombre a 'Luis Marcos'.
-2026-01-21 12:48:35 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
-2026-01-21 12:48:35 - INFO - Módulo: main - Eliminación: Héroe borrado -> Luis Marcos.
-2026-01-21 12:48:43 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
-2026-01-21 12:48:43 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Antonio (Tanque)
-2026-01-21 12:48:53 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
-2026-01-21 12:48:53 - INFO - Módulo: main - Acción: Nuevo héroe creado -> Jose Luis (Duende)
+2026-02-15 22:32:24 - WARNING - Módulo: main - Sistema: No se encontró fichero previo o está vacío. Se inicia lista nueva. Detalle: Expecting value: line 1 column 1 (char 0)
+2026-02-15 22:32:24 - INFO - Módulo: main - --- INICIO DE SESIÓN ---
+2026-02-15 22:32:39 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 22:32:39 - INFO - Módulo: main - Acción: Creado Heroe -> Jose
+2026-02-15 22:32:52 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 22:32:52 - INFO - Módulo: main - Modificación: 'Jose' pasó a ser 'Luis'.
+2026-02-15 22:34:08 - INFO - Módulo: main - Sistema: Datos cargados y convertidos a objetos correctamente.
+2026-02-15 22:34:08 - INFO - Módulo: main - --- INICIO DE SESIÓN ---
+2026-02-15 23:08:17 - INFO - Módulo: main - Sistema: Datos cargados y convertidos a objetos correctamente.
+2026-02-15 23:08:17 - INFO - Módulo: main - --- INICIO DE SESIÓN ---
+2026-02-15 23:08:24 - WARNING - Módulo: main - Creación fallida: El nombre 'Luis' ya existe.
+2026-02-15 23:08:35 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 23:08:35 - INFO - Módulo: main - Acción: Creado Heroe -> Jose
+2026-02-15 23:08:55 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 23:08:55 - INFO - Módulo: main - Acción: Creado Enemigo -> Ogro
+2026-02-15 23:09:09 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 23:09:09 - INFO - Módulo: main - Acción: Creado Enemigo -> Trol
+2026-02-15 23:09:34 - INFO - Módulo: main - Sistema: Datos cargados y convertidos a objetos correctamente.
+2026-02-15 23:09:34 - INFO - Módulo: main - --- INICIO DE SESIÓN ---
+2026-02-15 23:10:09 - INFO - Módulo: main - Sistema: Datos guardados exitosamente en fichero JSON.
+2026-02-15 23:10:09 - INFO - Módulo: main - Acción: Creado Heroe -> Mateo
+2026-02-15 23:10:22 - INFO - Módulo: main - --- FIN DE SESIÓN ---
